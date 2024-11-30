@@ -1,3 +1,4 @@
+import { View, Text, TextInput } from 'react-native'
 import { useState, useEffect } from 'react'
 
 interface IncomeSlideProps {
@@ -13,16 +14,16 @@ export default function IncomeSlide({ onResponse, response }: IncomeSlideProps) 
   }, [income, onResponse])
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">What's your monthly income?</h2>
-      <input
-        type="number"
-        value={income}
-        onChange={(e) => setIncome(Number(e.target.value))}
+    <View>
+      <Text className="text-2xl font-bold mb-4">What's your monthly income?</Text>
+      <TextInput
+        keyboardType="numeric"
+        value={income.toString()}
+        onChangeText={(text) => setIncome(Number(text))}
         className="w-full p-2 border border-gray-300 rounded"
         placeholder="Enter your monthly income"
       />
-    </div>
+    </View>
   )
 }
 

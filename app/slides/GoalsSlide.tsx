@@ -1,3 +1,4 @@
+import { View, Text, TextInput, Pressable } from 'react-native'
 import { useState, useEffect } from 'react'
 
 interface GoalsSlideProps {
@@ -23,22 +24,21 @@ export default function GoalsSlide({ onResponse, response }: GoalsSlideProps) {
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">What are your financial goals?</h2>
+    <View>
+      <Text className="text-2xl font-bold mb-4">What are your financial goals?</Text>
       {goals.map((goal, index) => (
-        <input
+        <TextInput
           key={index}
-          type="text"
           value={goal}
-          onChange={(e) => handleGoalChange(index, e.target.value)}
+          onChangeText={(text) => handleGoalChange(index, text)}
           className="w-full p-2 border border-gray-300 rounded mb-2"
           placeholder="Enter a financial goal"
         />
       ))}
-      <button onClick={addGoal} className="mt-2 px-4 py-2 bg-green-500 text-white rounded">
-        Add Goal
-      </button>
-    </div>
+      <Pressable onPress={addGoal} className="mt-2 px-4 py-2 bg-green-500 rounded">
+        <Text className="text-white">Add Goal</Text>
+      </Pressable>
+    </View>
   )
 }
 

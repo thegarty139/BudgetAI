@@ -1,5 +1,20 @@
-import { Text } from 'react-native';
+import { View } from 'react-native';
+import OnboardingFlow from './OnboardingFlow'
+import LandingPage from './LandingPage';
+import { useState } from 'react';
+import { router } from 'expo-router';
 
-export default function App() {
-  return <Text>Hello World</Text>;
+function App() {
+  const setIsOnboarding = (value: boolean) => {
+    router.push(value ? '/OnboardingFlow' : '/LandingPage');
+  }
+
+  return (
+    <View>
+      <LandingPage onBegin={() => setIsOnboarding(true)} />
+    </View>
+  );
 }
+
+export default App;
+

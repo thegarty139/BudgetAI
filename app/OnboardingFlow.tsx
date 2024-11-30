@@ -1,5 +1,6 @@
 'use client'
 
+import { View, Text, Pressable } from 'react-native'
 import { useState } from 'react'
 import ProgressBar from './ProgressBar'
 import IncomeSlide from './slides/IncomeSlide'
@@ -14,9 +15,13 @@ const slides = [
   { id: 'result', component: ResultSlide },
 ]
 
+interface Responses {
+  [key: string]: any;
+}
+
 export default function OnboardingFlow() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
-  const [responses, setResponses] = useState({})
+  const [responses, setResponses] = useState<Responses>({})
 
   const handleNext = () => {
     if (currentSlideIndex < slides.length - 1) {
@@ -37,26 +42,28 @@ export default function OnboardingFlow() {
   const CurrentSlide = slides[currentSlideIndex].component
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+    <View className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
       <ProgressBar currentStep={currentSlideIndex + 1} totalSteps={slides.length} />
       <CurrentSlide onResponse={handleResponse} response={responses[slides[currentSlideIndex].id]} />
-      <div className="mt-6 flex justify-between">
-        <button
-          onClick={handlePrevious}
+      <View className="mt-6 flex justify-between">
+        <Pressable
+          onPress={handlePrevious}
           disabled={currentSlideIndex === 0}
-          className="px-4 py-2 bg-gray-300 text-gray-700 rounded disabled:opacity-50"
+          className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
         >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
+          <Text className="text-gray-700">Previous</Text>
+        </Pressable>
+        <Pressable
+          onPress={handleNext}
           disabled={currentSlideIndex === slides.length - 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+          className="px-4 py-2 bg-blue-500 rounded disabled:opacity-50"
         >
-          {currentSlideIndex === slides.length - 2 ? 'Finish' : 'Next'}
-        </button>
-      </div>
-    </div>
+          <Text className="text-white">
+            {currentSlideIndex === slides.length - 2 ? 'Finish' : 'Next'}
+          </Text>
+        </Pressable>
+      </View>
+    </View>
   )
 }
 

@@ -1,3 +1,4 @@
+import { View, Text, TextInput } from 'react-native'
 import { useState, useEffect } from 'react'
 
 interface ExpensesSlideProps {
@@ -23,21 +24,21 @@ export default function ExpensesSlide({ onResponse, response }: ExpensesSlidePro
   }
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">What are your monthly expenses?</h2>
+    <View>
+      <Text className="text-2xl font-bold mb-4">What are your monthly expenses?</Text>
       {Object.entries(expenses).map(([category, amount]) => (
-        <div key={category} className="mb-4">
-          <label className="block mb-2 capitalize">{category}</label>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => handleExpenseChange(category, Number(e.target.value))}
+        <View key={category} className="mb-4">
+          <Text className="mb-2 capitalize">{category}</Text>
+          <TextInput
+            keyboardType="numeric"
+            value={amount.toString()}
+            onChangeText={(text) => handleExpenseChange(category, Number(text))}
             className="w-full p-2 border border-gray-300 rounded"
             placeholder={`Enter ${category} expenses`}
           />
-        </div>
+        </View>
       ))}
-    </div>
+    </View>
   )
 }
 
