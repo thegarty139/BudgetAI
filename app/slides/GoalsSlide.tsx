@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable } from 'react-native'
+import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native'
 import { useState, useEffect } from 'react'
 
 interface GoalsSlideProps {
@@ -10,35 +10,70 @@ export default function GoalsSlide({ onResponse, response }: GoalsSlideProps) {
   const [goals, setGoals] = useState<string[]>(response || [])
 
   useEffect(() => {
-    onResponse('goals', goals)
-  }, [goals, onResponse])
+    // Remove the response check since we always want to update goals
+    const hasChanged = !response || 
+      goals.length !== response.length || 
+      goals.some((goal, index) => goal !== response[index]);
 
-  const handleGoalChange = (index: number, value: string) => {
+    if (hasChanged) {
+      onResponse('goals', goals);
+    }
+  }, [goals, onResponse, response]);
+
+  const handleGoalChange = (index: number, text: string) => {
     const newGoals = [...goals]
-    newGoals[index] = value
+    newGoals[index] = text
     setGoals(newGoals)
   }
 
   const addGoal = () => {
-    setGoals([...goals, ''])
+    setGoals(prev => [...prev, ''])
   }
 
   return (
     <View>
-      <Text className="text-2xl font-bold mb-4">What are your financial goals?</Text>
+      <Text style={styles.title}>What are your financial goals?</Text>
       {goals.map((goal, index) => (
         <TextInput
           key={index}
           value={goal}
           onChangeText={(text) => handleGoalChange(index, text)}
-          className="w-full p-2 border border-gray-300 rounded mb-2"
+          style={styles.input}
           placeholder="Enter a financial goal"
         />
       ))}
-      <Pressable onPress={addGoal} className="mt-2 px-4 py-2 bg-green-500 rounded">
-        <Text className="text-white">Add Goal</Text>
+      <Pressable onPress={addGoal} style={styles.addButton}>
+        <Text style={styles.addButtonText}>Add Goal</Text>
       </Pressable>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  input: {
+    width: '100%',
+    padding: 8,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 4,
+    marginBottom: 8,
+  },
+  addButton: {
+    backgroundColor: '#22C55E',
+    padding: 12,
+    borderRadius: 4,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
 

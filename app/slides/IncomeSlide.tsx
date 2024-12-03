@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from 'react-native'
+import { View, Text, TextInput, StyleSheet } from 'react-native'
 import { useState, useEffect } from 'react'
 
 interface IncomeSlideProps {
@@ -10,20 +10,42 @@ export default function IncomeSlide({ onResponse, response }: IncomeSlideProps) 
   const [income, setIncome] = useState(response || 0)
 
   useEffect(() => {
-    onResponse('income', income)
-  }, [income, onResponse])
+    if (income !== response) {
+      onResponse('income', income)
+    }
+  }, [income, onResponse, response])
+
+  const handleIncomeChange = (text: string) => {
+    const value = text ? Number(text) : 0
+    setIncome(value)
+  }
 
   return (
     <View>
-      <Text className="text-2xl font-bold mb-4">What's your monthly income?</Text>
+      <Text style={styles.title}>What's your monthly income?</Text>
       <TextInput
         keyboardType="numeric"
         value={income.toString()}
-        onChangeText={(text) => setIncome(Number(text))}
-        className="w-full p-2 border border-gray-300 rounded"
+        onChangeText={handleIncomeChange}
+        style={styles.input}
         placeholder="Enter your monthly income"
       />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  input: {
+    width: '100%',
+    padding: 8,
+    borderWidth: 1,
+    borderColor: '#D1D5DB',
+    borderRadius: 4,
+  },
+});
 
